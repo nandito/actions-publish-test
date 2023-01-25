@@ -14,7 +14,11 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
             - name: Get version tag
               run: |
-                  echo "tag=$(node get-version-tag.js)" >> $GITHUB_ENV
+                  TAG=$(npm pkg get version \
+                  | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\)//' \ # remove major.minor.patch numbers
+                  | sed 's/^"\(.*\)"$/\1/' \               # remove wrapper quotes
+                  | sed 's/-\(.*\)/\1/')                   # remove "-" if exists
+                  echo "tag=$TAG" >> $GITHUB_ENV
             - name: Publish
               run: |
                   TAG=${{ env.tag }}
