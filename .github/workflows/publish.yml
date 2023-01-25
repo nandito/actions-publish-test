@@ -15,12 +15,13 @@ jobs:
             - name: Get version tag
               run: |
                   echo "tag=$(node get-version-tag.js)" >> $GITHUB_ENV
-                  echo "deploy tag: $GITHUB_ENV"
             - name: Publish
               run: |
                   if [[ -z ${{ env.tag }} ]]; then
+                      echo "deploy with latest tag"
                       npm publish
                   else
+                      echo "deploy with ${{ env.tag }} tag"
                       npm publish --tag ${{ env.tag }}
                   fi
               env:
