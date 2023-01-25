@@ -12,6 +12,15 @@ jobs:
               with:
                   node-version: "16.x"
                   registry-url: "https://registry.npmjs.org"
-            - run: npm publish
+            - name: Get version tag
+              run: |
+                  TAG=$(node get-version-tag.js)
+            - name: Publish
+              run: |
+                  if [[ -z ${TAG} ]]; then
+                      npm publish
+                  else
+                      npm publish --tag ${TAG}
+                  fi
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
