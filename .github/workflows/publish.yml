@@ -14,13 +14,13 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
             - name: Get version tag
               run: |
-                  TAG=$(node get-version-tag.js)
+                  echo "tag=$(node get-version-tag.js)" >> $GITHUB_ENV
             - name: Publish
               run: |
-                  if [[ -z ${TAG} ]]; then
+                  if [[ -z ${{ env.tag }} ]]; then
                       npm publish
                   else
-                      npm publish --tag ${TAG}
+                      npm publish --tag ${{ env.tag }}
                   fi
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
