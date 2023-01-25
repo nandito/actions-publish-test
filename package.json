@@ -1,0 +1,10 @@
+{
+  "name": "actions-publish-test",
+  "version": "1.0.0",
+  "description": "this is a test repo",
+  "main": "index.js",
+  "repository": "https://github.com/nandito/actions-publish-test",
+  "author": "Nandor Biro",
+  "license": "MIT",
+  "private": false
+}
