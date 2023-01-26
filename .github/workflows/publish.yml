@@ -3,15 +3,10 @@ on:
     release:
         types: [created]
 jobs:
-    build:
+    get_version_tag:
         runs-on: ubuntu-latest
-        steps:
+        steps: 
             - uses: actions/checkout@v3
-            # Setup .npmrc file to publish to npm
-            - uses: actions/setup-node@v3
-              with:
-                  node-version: "16.x"
-                  registry-url: "https://registry.npmjs.org"
             - name: Get version tag
               # 1st sed: remove major.minor.patch numbers
               # 2nd sed: remove wrapper quotes
@@ -22,6 +17,22 @@ jobs:
                   | sed 's/^"\(.*\)"$/\1/' \
                   | sed 's/-\([a-z]*\)\([0-9]*\)/\1/') 
                   echo "tag=$TAG" >> $GITHUB_ENV
+    main_only:
+        needs: get_version_tag
+        if: ${{ !env.tag }}
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "This only runs for `latest` versions"
+    publish:
+        needs: get_version_tag
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            # Setup .npmrc file to publish to npm
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: "16.x"
+                  registry-url: "https://registry.npmjs.org"
             - name: Publish
               run: |
                   TAG=${{ env.tag }}
