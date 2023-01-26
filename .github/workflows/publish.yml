@@ -43,7 +43,7 @@ jobs:
                       echo "deploy with latest tag"
                       npm publish
                   else
-                      echo "deploy with ${{ env.tag }} tag"
+                      echo "deploy with ${{ needs.get_version_tag.outputs.tag }} tag"
                       npm publish --tag ${{ needs.get_version_tag.outputs.tag }}
                   fi
               env:
