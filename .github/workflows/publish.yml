@@ -22,7 +22,7 @@ jobs:
                   echo "tag=$TAG" >> $GITHUB_OUTPUT
     main_only:
         needs: get_version_tag
-        if: ${{ needs.get_version_tag.outputs.tag != "" }}
+        if: ${{ needs.get_version_tag.outputs.tag != 0 }}
         runs-on: ubuntu-latest
         steps:
             - run: echo "This only runs for `latest` versions"
