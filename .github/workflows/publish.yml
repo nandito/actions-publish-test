@@ -15,12 +15,12 @@ jobs:
             - name: Get version tag
               # 1st sed: remove major.minor.patch numbers
               # 2nd sed: remove wrapper quotes
-              # 3rd sed: remove "-" if exists
+              # 3rd sed: remove "-" and tag version if exists
               run: |
                   TAG=$(npm pkg get version \
                   | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\)//' \
                   | sed 's/^"\(.*\)"$/\1/' \
-                  | sed 's/-\(.*\)/\1/') 
+                  | sed 's/-\([a-z]*\)\([0-9]*\)/\1/') 
                   echo "tag=$TAG" >> $GITHUB_ENV
             - name: Publish
               run: |
